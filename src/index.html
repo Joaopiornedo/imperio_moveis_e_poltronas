@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento</title>
+    <!--Meta Tag-->
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Orçamento Império"/>
+    <meta property="og:image" content="https://media.discordapp.net/attachments/1194093652650238043/1299203514165366784/logo_jean.PNG?ex=671c590f&is=671b078f&hm=c9a1391bf7d54abf3f4119b9937f51d41928d2d9872d23b0423783688750ab69&=&format=webp&quality=lossless"/>
+    <meta property="og:site_name" content="Orçamento Império"/>
+
+    <!--LINK CSS & JS-->
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="/src/js/script.js" defer></script>
+</head>
+
+<body>
+    <picture>
+        <img draggable="false" src="/src/img/logo_jean.PNG" alt="logo">
+    </picture>
+    <div class="container">
+        <h1>Gerar Orçamento</h1>
+        <!--FORM-->
+        <form id="orcamentoForm">
+            <label for="nome">Nome do cliente:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="data">Data do orçamento:</label>
+            <input type="date" id="data" name="data" required>
+            <!--BOARD DE ITENS-->
+            <div id="board"></div>
+            <button class="btnAdd" type="button" id="addItemBtn">Adicionar Item</button>
+            <!--BOTAO SUBMIT-->
+            <button class="btnAdd" type="submit">Gerar PDF</button>
+        </form>
+    </div>
+</body>
+
+</html>
