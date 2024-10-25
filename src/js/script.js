@@ -94,7 +94,7 @@ document.getElementById("orcamentoForm").addEventListener("submit", function(eve
 
     // Criando o template padrão
     const img = new Image();
-    img.src = "./img/template.jpg";
+    img.src = "/src/img/template.jpg";
 
     // Desenhando em cima do template
     img.onload = function () {
