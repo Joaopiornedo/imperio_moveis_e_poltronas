@@ -17,9 +17,29 @@ document.getElementById("addItemBtn").addEventListener("click", function () {
 
     // Tipos de Peças
     const options = [
-        { label: "Serviço A" },
-        { label: "Serviço B" },
-        { label: "Serviço C" },
+        { "label": "Aranha" },
+        { "label": "Braço mod. Corsa" },
+        { "label": "Braço mod. Digitador com regulagem" },
+        { "label": "Flange diretor com relax" },
+        { "label": "Flange mult regulagem" },
+        { "label": "Flange secretaria" },
+        { "label": "Madeira assento executivo" },
+        { "label": "Madeira assento presidente" },
+        { "label": "Madeira assento secretaria" },
+        { "label": "Madeira assento diretor" },
+        { "label": "Madeira encosto executivo alta" },
+        { "label": "Madeira encosto executivo baixa" },
+        { "label": "Madeira encosto diretor" },
+        { "label": "Madeira encosto presidente" },
+        { "label": "Madeira encosto secretaria" },
+        { "label": "Pistão" },
+        { "label": "Rodízio em polipropileno" },
+        { "label": "Rodízio em silicone p.u" },
+        { "label": "Troca tecido diretor" },
+        { "label": "Troca tecido executiva" },
+        { "label": "Troca tecido presidente" },
+        { "label": "Troca tecido secretaria" }
+
     ];
 
     options.forEach(opt => {
