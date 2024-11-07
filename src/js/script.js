@@ -1,5 +1,5 @@
-// Função que cria item no Board
-document.getElementById("addItemBtn").addEventListener("click", function () {
+// Função que cria item no Board com lista predefinida
+document.getElementById("addItemBtnPredef").addEventListener("click", function () {
     const item = document.createElement('div');
     item.classList.add('item');
 
@@ -7,13 +7,13 @@ document.getElementById("addItemBtn").addEventListener("click", function () {
     qtyInput.type = 'number';
     qtyInput.placeholder = 'Qtd';
     qtyInput.required = true;
-    qtyInput.style.width = '10%';
+    qtyInput.style.width = '25%';
     qtyInput.step = '0.01';
 
     // Substituindo o campo de descrição por um select com opções predefinidas
     const descSelect = document.createElement('select');
     descSelect.required = true;
-    descSelect.style.width = '70%';
+    descSelect.style.width = '50%';
 
     // Tipos de Peças
     const options = [
@@ -39,12 +39,11 @@ document.getElementById("addItemBtn").addEventListener("click", function () {
         { "label": "Troca tecido executiva" },
         { "label": "Troca tecido presidente" },
         { "label": "Troca tecido secretaria" }
-
     ];
 
     options.forEach(opt => {
         const optionElement = document.createElement('option');
-        optionElement.value = opt.value;
+        optionElement.value = opt.label;
         optionElement.text = opt.label;
         descSelect.appendChild(optionElement);
     });
@@ -52,21 +51,10 @@ document.getElementById("addItemBtn").addEventListener("click", function () {
     // Exibir o preço automaticamente baseado na opção selecionada
     const priceDisplay = document.createElement('input');
     priceDisplay.type = 'number';
-    priceDisplay.placeholder = 'uni';
+    priceDisplay.placeholder = 'UNI';
     priceDisplay.required = true;
-    priceDisplay.style.width = '15%';
-    priceDisplay.setAttribute('id', 'un')
+    priceDisplay.style.width = '25%';
     priceDisplay.step = '0.01';
-    
-
-    // Responsividade
-    if (window.innerWidth <= 768) {
-        descSelect.style.width = '60%';
-        qtyInput.style.width = '15%';
-        priceDisplay.value = descSelect.value;
-    }
-
-
 
     const removeBtn = document.createElement('button');
     removeBtn.classList.add('removeBtn');
@@ -83,28 +71,71 @@ document.getElementById("addItemBtn").addEventListener("click", function () {
     document.getElementById('board').appendChild(item);
 });
 
-// Função principal do formulario
+// Função que cria item manualmente (campo vazio para preenchimento)
+document.getElementById("addItemBtnManual").addEventListener("click", function () {
+    const item = document.createElement('div');
+    item.classList.add('item');
+
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.placeholder = 'Qtd';
+    qtyInput.required = true;
+    qtyInput.style.width = '25%';
+    qtyInput.step = '0.01';
+
+    // Campo de descrição manual
+    const descInput = document.createElement('input');
+    descInput.type = 'text';
+    descInput.placeholder = 'Descrição do item';
+    descInput.required = true;
+    descInput.style.width = '50%';
+
+    // Campo de preço manual
+    const priceInput = document.createElement('input');
+    priceInput.type = 'number';
+    priceInput.placeholder = 'UNI';
+    priceInput.required = true;
+    priceInput.style.width = '25%';
+    priceInput.step = '0.01';
+
+    const removeBtn = document.createElement('button');
+    removeBtn.classList.add('removeBtn');
+    removeBtn.textContent = 'x';
+    removeBtn.addEventListener('click', function () {
+        item.remove();
+    });
+
+    item.appendChild(qtyInput);
+    item.appendChild(descInput);
+    item.appendChild(priceInput);
+    item.appendChild(removeBtn);
+
+    document.getElementById('board').appendChild(item);
+});
+
+// Função principal do formulário para gerar o PDF
 document.getElementById("orcamentoForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
-    // Pegando os inputs
+    // Pegando os dados do formulário
     const nome = document.getElementById("nome").value;
     const telefone = document.getElementById("telefone").value;
     const data = document.getElementById("data").value;
     const tcond = document.getElementById("tcond").value;
     const fpag = document.getElementById("fpag").value;
 
+    // Formatando a data
     const [ano, mes, dia] = data.split('-');
     const datebr = `${dia}/${mes}/${ano}`;
 
     let valorTotalItens = 0; // Variável para somar o total do orçamento
 
-    // Pegando valores do input do board
     const items = [];
+    // Pegando os itens do board
     document.querySelectorAll("#board .item").forEach(function (itemDiv) {
         const qty = parseFloat(itemDiv.querySelector("input[type='number']").value);
-        const desc = itemDiv.querySelector("select").selectedOptions[0].text;
-        const price = parseFloat(itemDiv.querySelector("input[id='un']").value);
+        const desc = itemDiv.querySelector("select, input[type='text']").value;
+        const price = parseFloat(itemDiv.querySelector("input[type='number']").value);
         const totalItem = qty * price;
         items.push({ qty, desc, price, total: totalItem });
         valorTotalItens += totalItem; // Somando o total de cada item
@@ -128,35 +159,26 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
         doc.text(125, 90, nome);
         doc.text(125, 100, telefone);
         
-
-        // Define a largura máxima (em pontos) para o texto no PDF
-        const larguraMaxima = 70; // ajuste conforme necessário
-
-        // Divide o texto em várias linhas com base na largura máxima
+        // Adicionando os termos e condições
+        const larguraMaxima = 70;
         const linhasTexto = doc.splitTextToSize(tcond, larguraMaxima);
-        
-        // Define a posição inicial
-        let yPos = 242; // ajuste a posição y conforme necessário
-
-        // Desenha cada linha do texto no PDF
+        let yPos = 242;
         linhasTexto.forEach(linha => {
-            doc.text(135, yPos, linha); // ajuste x e y conforme necessário
-            yPos += 7; // move para a linha de baixo, ajuste conforme a altura da linha desejada
+            doc.text(135, yPos, linha);
+            yPos += 7;
         });
-        /////////////////////////////
-        const larguraMax = 70;
-        const linhasTexto2 = doc.splitTextToSize(fpag, larguraMax);
+
+        // Adicionando a forma de pagamento
+        const linhasTexto2 = doc.splitTextToSize(fpag, larguraMaxima);
         let yPos2 = 272;
         linhasTexto2.forEach(linha => {
-            doc.text(135, yPos2, linha); // ajuste x e y conforme necessário
-            yPos2 += 7; // move para a linha de baixo, ajuste conforme a altura da linha desejada
+            doc.text(135, yPos2, linha);
+            yPos2 += 7;
         });
 
-
-
+        // Adicionando a data
         doc.setTextColor(255, 255, 255);
         doc.text(25, 56, datebr);
-
 
         let ypos = 125;
         // Posição Y inicial para os itens
@@ -164,15 +186,16 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
             doc.setTextColor(0, 0, 0);
             doc.text(13, ypos, item.qty.toString());
             doc.text(35, ypos, item.desc);
-            doc.text(160, ypos, item.price.toString());
+            doc.text(160, ypos, item.price.toFixed(2));
             doc.text(180, ypos, item.total.toFixed(2));
             ypos += 10;
         });
 
         // Adicionando o valor total de todos os itens do orçamento
         doc.setTextColor(255, 255, 255);
-        doc.text(165, 217, valorTotalItens.toFixed(2)); // Exibindo o total do orçamento
+        doc.text(165, 217, valorTotalItens.toFixed(2));
 
+        // Salvando o PDF
         doc.save(`Orcamento_${nome}.pdf`);
     };
 });
