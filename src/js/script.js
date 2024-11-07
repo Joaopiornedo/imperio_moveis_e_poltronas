@@ -9,6 +9,7 @@ document.getElementById("addItemBtnPredef").addEventListener("click", function (
     qtyInput.required = true;
     qtyInput.style.width = '25%';
     qtyInput.step = '0.01';
+    qtyInput.setAttribute('id', 'qty')
 
     // Substituindo o campo de descrição por um select com opções predefinidas
     const descSelect = document.createElement('select');
@@ -55,6 +56,7 @@ document.getElementById("addItemBtnPredef").addEventListener("click", function (
     priceDisplay.required = true;
     priceDisplay.style.width = '25%';
     priceDisplay.step = '0.01';
+    priceDisplay.setAttribute('id', 'price')
 
     const removeBtn = document.createElement('button');
     removeBtn.classList.add('removeBtn');
@@ -82,6 +84,7 @@ document.getElementById("addItemBtnManual").addEventListener("click", function (
     qtyInput.required = true;
     qtyInput.style.width = '25%';
     qtyInput.step = '0.01';
+    qtyInput.setAttribute('id', 'qty')
 
     // Campo de descrição manual
     const descInput = document.createElement('input');
@@ -97,6 +100,7 @@ document.getElementById("addItemBtnManual").addEventListener("click", function (
     priceInput.required = true;
     priceInput.style.width = '25%';
     priceInput.step = '0.01';
+    priceInput.setAttribute('id', 'price')
 
     const removeBtn = document.createElement('button');
     removeBtn.classList.add('removeBtn');
@@ -133,9 +137,9 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
     const items = [];
     // Pegando os itens do board
     document.querySelectorAll("#board .item").forEach(function (itemDiv) {
-        const qty = parseFloat(itemDiv.querySelector("input[type='number']").value);
+        const qty = parseFloat(itemDiv.querySelector("input[id='qty']").value);
         const desc = itemDiv.querySelector("select, input[type='text']").value;
-        const price = parseFloat(itemDiv.querySelector("input[type='number']").value);
+        const price = parseFloat(itemDiv.querySelector("input[id='price']").value);
         const totalItem = qty * price;
         items.push({ qty, desc, price, total: totalItem });
         valorTotalItens += totalItem; // Somando o total de cada item
