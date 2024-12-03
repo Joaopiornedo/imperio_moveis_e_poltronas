@@ -9,7 +9,7 @@ document.getElementById("addItemBtnPredef").addEventListener("click", function (
     qtyInput.required = true;
     qtyInput.style.width = '25%';
     qtyInput.step = '0.01';
-    qtyInput.setAttribute('id', 'qty')
+    qtyInput.setAttribute('id', 'qty');
 
     // Substituindo o campo de descrição por um select com opções predefinidas
     const descSelect = document.createElement('select');
@@ -56,7 +56,7 @@ document.getElementById("addItemBtnPredef").addEventListener("click", function (
     priceDisplay.required = true;
     priceDisplay.style.width = '25%';
     priceDisplay.step = '0.01';
-    priceDisplay.setAttribute('id', 'price')
+    priceDisplay.setAttribute('id', 'price');
 
     const removeBtn = document.createElement('button');
     removeBtn.classList.add('removeBtn');
@@ -84,7 +84,7 @@ document.getElementById("addItemBtnManual").addEventListener("click", function (
     qtyInput.required = true;
     qtyInput.style.width = '25%';
     qtyInput.step = '0.01';
-    qtyInput.setAttribute('id', 'qty')
+    qtyInput.setAttribute('id', 'qty');
 
     // Campo de descrição manual
     const descInput = document.createElement('input');
@@ -100,7 +100,7 @@ document.getElementById("addItemBtnManual").addEventListener("click", function (
     priceInput.required = true;
     priceInput.style.width = '25%';
     priceInput.step = '0.01';
-    priceInput.setAttribute('id', 'price')
+    priceInput.setAttribute('id', 'price');
 
     const removeBtn = document.createElement('button');
     removeBtn.classList.add('removeBtn');
@@ -152,6 +152,10 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
     const img = new Image();
     img.src = "/src/img/template.jpg";
 
+    // Template de continuação
+    const imgContinuation = new Image();
+    imgContinuation.src = "/src/img/continue.jpg";
+
     // Desenhando em cima do template
     img.onload = function () {
         doc.addImage(img, 'JPG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
@@ -162,21 +166,21 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
         // Adicionando os dados do cliente
         doc.text(125, 90, nome);
         doc.text(125, 100, telefone);
-        
+
         // Adicionando os termos e condições
         const larguraMaxima = 70;
         const linhasTexto = doc.splitTextToSize(tcond, larguraMaxima);
-        let yPos = 242;
+        let yPos = 240;
         linhasTexto.forEach(linha => {
-            doc.text(135, yPos, linha);
+            doc.text(30, yPos, linha);
             yPos += 7;
         });
 
         // Adicionando a forma de pagamento
         const linhasTexto2 = doc.splitTextToSize(fpag, larguraMaxima);
-        let yPos2 = 272;
+        let yPos2 = 268;
         linhasTexto2.forEach(linha => {
-            doc.text(135, yPos2, linha);
+            doc.text(30, yPos2, linha);
             yPos2 += 7;
         });
 
@@ -185,19 +189,48 @@ document.getElementById("orcamentoForm").addEventListener("submit", function (ev
         doc.text(25, 56, datebr);
 
         let ypos = 125;
-        // Posição Y inicial para os itens
-        items.forEach(item => {
+        let linhasPorPagina = 10; // Número máximo de linhas por página
+        let linhaAtual = 0;
+
+        // Adicionando os itens
+        items.forEach((item, index) => {
+            if (linhaAtual === linhasPorPagina) {
+                // Criar uma nova página com o template de continuação
+                doc.addPage();
+                doc.addImage(
+                imgContinuation,
+                "JPG",
+                0,
+                0,
+                doc.internal.pageSize.width,
+                doc.internal.pageSize.height
+                );
+                
+                ypos = 60; // Reinicia a posição Y na nova página
+                linhaAtual = 0; // Reinicia a contagem de linhas
+            }
+
             doc.setTextColor(0, 0, 0);
             doc.text(13, ypos, item.qty.toString());
             doc.text(35, ypos, item.desc);
             doc.text(160, ypos, item.price.toFixed(2));
             doc.text(180, ypos, item.total.toFixed(2));
             ypos += 10;
+            linhaAtual++;
         });
 
-        // Adicionando o valor total de todos os itens do orçamento
-        doc.setTextColor(255, 255, 255);
-        doc.text(165, 217, valorTotalItens.toFixed(2));
+
+        //Pegando numero de paginas
+        const paginas = doc.getNumberOfPages();
+        if (paginas > 1) {
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(20);
+          doc.text(140, 285, "TOTAL: R$" + valorTotalItens.toString());
+        } else {
+          doc.setTextColor(0, 0, 0);
+          doc.setFontSize(20);
+          doc.text(140, 230, "TOTAL: R$" + valorTotalItens.toString());
+        }
 
         // Salvando o PDF
         doc.save(`Orçamento_${nome}.pdf`);
