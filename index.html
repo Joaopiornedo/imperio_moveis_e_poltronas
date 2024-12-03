@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orçamento</title>
     <!--Meta Tag-->
-    <link rel="shortcut icon" href="src/img/icon.png" type="image/x-icon">
-    <meta property="og:type" content="website"/>
-    <meta property="og:title" content="Orçamento Império"/>
-    <meta property="og:image" content="https://imperio-moveis-e-poltronas.vercel.app/src/img/logo_jean.PNG"/>
-    <meta property="og:site_name" content="Orçamento Império"/>
+    <link rel="shortcut icon" href="src/img/icon.png" type="image/x-icon" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Orçamento Império" />
+    <meta
+      property="og:image"
+      content="https://imperio-moveis-e-poltronas.vercel.app/src/img/logo_jean.PNG"
+    />
+    <meta property="og:site_name" content="Orçamento Império" />
 
     <!--LINK CSS & JS-->
-    <link rel="stylesheet" href="src/css/styles.css">
+    <link rel="stylesheet" href="src/css/styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="src/js/script.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <picture>
-        <img draggable="false" src="/src/img/logo_jean.PNG" alt="logo">
+      <img draggable="false" src="/src/img/logo_jean.PNG" alt="logo" />
     </picture>
     <div class="container">
-        <h1>Gerar Orçamento</h1>
-        <!--FORM-->
-        <form id="orcamentoForm">
-            <label for="nome">Nome do cliente:</label>
-            <input type="text" id="nome" name="nome">
+      <h1>Gerar Orçamento</h1>
+      <!--FORM-->
+      <form id="orcamentoForm">
+        <label for="nome">Nome do cliente:</label>
+        <input type="text" id="nome" name="nome" required />
 
-            <label for="telefone">Telefone do cliente:</label>
-            <input type="text" id="telefone" name="telefone">
+        <label for="telefone">Telefone do cliente:</label>
+        <input type="text" id="telefone" name="telefone" required />
 
-            <label for="data">Data do orçamento:</label>
-            <input type="date" id="data" name="data">
+        <label for="data">Data do orçamento:</label>
+        <input type="date" id="data" name="data" required />
 
-            <label for="tcond">Termos e Condições:</label>
-            <input type="text" id="tcond" name="tcond">
+        <label for="tcond">Termos e Condições:</label>
+        <input type="text" id="tcond" name="tcond" required />
 
-            <label for="fpag">Forma de pagamento:</label>
-            <input type="text" id="fpag" name="fpag">
+        <label for="fpag">Forma de pagamento:</label>
+        <input type="text" id="fpag" name="fpag" required />
 
-            <!-- Botões para adicionar item -->
-            <button class="btnAdd" type="button" id="addItemBtnPredef">Adicionar Item (Pré-definido)</button>
-            <button class="btnAdd" type="button" id="addItemBtnManual">Adicionar Item (Manual)</button>
-            
-            <!--BOARD DE ITENS-->
-            <div id="board"></div>
-            
-            <!--BOTÃO SUBMIT-->
-            <button class="btnAdd" type="submit">Gerar PDF</button>
-        </form>
+        <!-- Botões para adicionar item -->
+        <button class="btnAdd" type="button" id="addItemBtnPredef">
+          Adicionar Item (Pré-definido)
+        </button>
+        <button class="btnAdd" type="button" id="addItemBtnManual">
+          Adicionar Item (Manual)
+        </button>
+
+        <!--BOARD DE ITENS-->
+        <div id="board"></div>
+        <!--BOTÃO SUBMIT-->
+        <button class="btnAdd" type="submit">Gerar PDF</button>
+      </form>
     </div>
-</body>
-
+  </body>
 </html>
